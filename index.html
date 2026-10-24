@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Musiqa pleyer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <div class="toolbar">
+                <label class="search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input id="searchInput" type="search" placeholder="Qidirish…" autocomplete="off"
+                        aria-label="Qidirish">
+                </label>
+
+                <select id="filterSelect" class="control" aria-label="Filter">
+                    <option value="">Filter</option>
+                </select>
+
+                <select id="sortSelect" class="control" aria-label="Saralash">
+                    <option value="">Saralash</option>
+                    <option value="az">A → Z</option>
+                    <option value="za">Z → A</option>
+                    <option value="views">Ko'p ko'rilgan</option>
+                    <option value="new">Yangilar</option>
+                    <option value="old">Eskilar</option>
+                </select>
+
+                <button id="allBtn" class="chip" type="button">Hammasi</button>
+                <button id="clearBtn" class="chip" type="button">Tozalash</button>
+                <button id="addBtn" class="chip chip--primary" type="button">+ Qo'shish</button>
+            </div>
+
+            <button id="themeBtn" class="icon-btn" type="button" aria-label="Mavzuni almashtirish" title="Light / Dark">
+                <svg class="i-moon" viewBox="0 0 24 24">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+                <svg class="i-sun" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="layout">
+
+        <section class="player" aria-label="Pleyer">
+            <div class="player__top">
+                <div class="cover cover--lg" id="pCover"></div>
+                <div class="player__info">
+                    <p class="player__artist" id="pArtist"></p>
+                    <h2 class="player__title" id="pTitle"></h2>
+                </div>
+            </div>
+
+            <div class="progress">
+                <input type="range" id="seek" min="0" max="100" step="0.1" value="0" aria-label="Vaqt bo'yicha surish">
+                <div class="progress__times">
+                    <span id="curTime">0:00</span>
+                    <span id="durTime">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="ctl" id="prevBtn" type="button" aria-label="Oldingi" title="Oldingi">
+                    <svg viewBox="0 0 24 24">
+                        <polygon points="19 20 9 12 19 4 19 20" fill="currentColor" />
+                        <line x1="5" y1="19" x2="5" y2="5" />
+                    </svg>
+                </button>
+                <button class="ctl" id="backBtn" type="button" aria-label="15 soniya orqaga" title="−15 s">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /><text x="12" y="15.2" text-anchor="middle"
+                            font-size="7" font-weight="700" fill="currentColor" stroke="none">15</text>
+                    </svg>
+                </button>
+
+                <button class="play" id="playBtn" type="button" aria-label="Ijro etish / Pauza">
+                    <svg class="i-play" viewBox="0 0 24 24">
+                        <polygon points="7 4 20 12 7 20 7 4" />
+                    </svg>
+                    <svg class="i-pause" viewBox="0 0 24 24">
+                        <rect x="6" y="4" width="4" height="16" rx="1" />
+                        <rect x="14" y="4" width="4" height="16" rx="1" />
+                    </svg>
+                </button>
+
+                <button class="ctl" id="fwdBtn" type="button" aria-label="15 soniya oldinga" title="+15 s">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="23 4 23 10 17 10" />
+                        <path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10" /><text x="12" y="15.2" text-anchor="middle"
+                            font-size="7" font-weight="700" fill="currentColor" stroke="none">15</text>
+                    </svg>
+                </button>
+                <button class="ctl" id="nextBtn" type="button" aria-label="Keyingi" title="Keyingi">
+                    <svg viewBox="0 0 24 24">
+                        <polygon points="5 4 15 12 5 20 5 4" fill="currentColor" />
+                        <line x1="19" y1="5" x2="19" y2="19" />
+                    </svg>
+                </button>
+                <button class="ctl ctl--speed" id="speedBtn" type="button" aria-label="Tezlik"
+                    title="Tezlik">1x</button>
+            </div>
+        </section>
+
+        <section class="library" aria-label="Musiqalar">
+            <div class="library__head">
+                <h2>Musiqalar</h2>
+                <span id="countLabel" class="muted"></span>
+            </div>
+            <ul id="trackList" class="track-list"></ul>
+            <div id="emptyState" class="empty" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 18V5l12-2v13" />
+                    <circle cx="6" cy="18" r="3" />
+                    <circle cx="18" cy="16" r="3" />
+                </svg>
+                <p>Hech narsa topilmadi</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Qo'shish / Tahrirlash oynasi -->
+    <dialog id="trackDialog" class="dialog" aria-labelledby="dialogTitle">
+        <form id="trackForm" class="form" novalidate autocomplete="off">
+            <h2 id="dialogTitle" class="form__title">Yangi musiqa qo'shish</h2>
+
+            <label class="field">
+                <span>Musiqa nomi <b class="req">*</b></span>
+                <input class="control" name="title" type="text" placeholder="Masalan: Thunder">
+            </label>
+
+            <label class="field">
+                <span>Ijrochi</span>
+                <input class="control" name="artist" type="text" placeholder="Noma'lum">
+            </label>
+
+            <div class="field-row">
+                <label class="field">
+                    <span>Kategoriya <b class="req">*</b></span>
+                    <input class="control" name="category" type="text" list="categoryList" placeholder="Pop, Rock…">
+                    <datalist id="categoryList"></datalist>
+                </label>
+
+                <label class="field">
+                    <span>Sana <b class="req">*</b></span>
+                    <input class="control" name="date" type="date">
+                </label>
+            </div>
+
+            <label class="field">
+                <span>Audio URL <b class="req">*</b></span>
+                <input class="control" name="src" type="text" placeholder="https://… yoki images/song.mp3">
+            </label>
+
+            <label class="field">
+                <span>Muqova rasmi URL</span>
+                <input class="control" name="cover" type="text" placeholder="https://…/cover.jpg (ixtiyoriy)">
+            </label>
+
+            <div class="form__actions">
+                <button type="button" class="chip" id="cancelBtn">Bekor qilish</button>
+                <button type="submit" class="chip chip--primary" id="saveBtn">Qo'shish</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <audio id="audio" preload="metadata"></audio>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
